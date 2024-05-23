@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Type</title>
+</head>
+<body>
+<h3>Update Type</h3>
+<div>
+    <a th:href="@{/type}">Back to Tour List</a>
+</div>
+<div th:replace="/layout :: head"></div>
+<div id="form">
+    <form th:action="@{/type/update/{id}(id=${type.id})}" th:object="${type}" method="post">
+        <div>
+            <label for="name">Type Name:</label>
+            <input type="text" id="name" th:field="*{name}" required/>
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Type Name Error</p>
+        </div>
+        <div>
+            <input type="submit" value="Save Changes"/>
+        </div>
+    </form>
+</div>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>

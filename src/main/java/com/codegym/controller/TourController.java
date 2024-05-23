@@ -1,6 +1,5 @@
 package com.codegym.controller;
 
-
 import com.codegym.model.Tour;
 import com.codegym.model.Type;
 import com.codegym.service.ITourService;
@@ -84,4 +83,3 @@ public class TourController {
         return "redirect:/tour";
     }
 }
-
