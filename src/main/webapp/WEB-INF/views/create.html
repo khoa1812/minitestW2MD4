@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>Create Tour</title>
+</head>
+<body>
+<h3>Add Tour</h3>
+<p>
+    <a th:href="@{/tour}">
+        Back to tour list
+    </a>
+</p>
+<div id="form">
+    <form action="/create" th:object="${tour}"
+          method="POST" novalidate="novalidate">
+        <input type="hidden" th:field="*{id}"/>
+        <div>
+            <label for="code">Code</label>
+            <input type="text" id="code" th:field="*{code}"/> <br>
+            <p th:if="${#fields.hasErrors('code')}" th:errors="*{code}">Code Error</p>
+        </div>
+        <div>
+            <label for="destination">Destination</label>
+            <input type="text" id="destination" th:field="*{destination}"/> <br>
+            <p th:if="${#fields.hasErrors('destination')}" th:errors="*{destination}">Destination Error</p>
+        </div>
+        <div>
+            <label for="price">Price</label>
+            <input type="number" id="price" th:field="*{price}" step="0.01"/> <br>
+            <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</p>
+        </div>
+        <div>
+            <label for="type">Type</label>
+            <select id="type" th:field="*{type}">
+                <option th:each="p : ${types}" th:value="${p.id}" th:text="${p.name}"></option>
+            </select>
+            <p th:if="${#fields.hasErrors('type')}" th:errors="*{type}">Type Error</p>
+        </div>
+        <div>
+            <label for="idUser">User ID</label>
+            <input type="text" id="idUser" th:field="*{idUser}"/> <br>
+            <p th:if="${#fields.hasErrors('idUser')}" th:errors="*{idUser}">User ID Error</p>
+        </div>
+        <input type="submit" value="Save"/>
+    </form>
+</div>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
