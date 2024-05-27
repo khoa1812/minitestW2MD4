@@ -63,7 +63,7 @@ public class TypeController {
     }
 
     @GetMapping("/type/delete/{id}")
-    public String delete(@PathVariable Long id, RedirectAttributes redirect) {
+    public String deleteType(@PathVariable Long id, RedirectAttributes redirect) {
         typeService.remove(id);
         redirect.addFlashAttribute("message", "Type deleted successfully");
         return "redirect:/type";

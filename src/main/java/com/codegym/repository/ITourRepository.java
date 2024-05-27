@@ -1,6 +1,7 @@
 package com.codegym.repository;
 
 
+import com.codegym.exception.DuplicateCodeException;
 import com.codegym.model.Tour;
 import com.codegym.model.Type;
 import org.springframework.data.domain.Page;
@@ -12,5 +13,5 @@ public interface ITourRepository extends CrudRepository<Tour, Long> {
 
     Page<Tour> findAll(Pageable pageable);
 
-    Page<Tour> findAllByCodeContaining(Pageable pageable, String name);
+    Page<Tour> findAllByCodeContaining(Pageable pageable, String name) throws DuplicateCodeException;
 }

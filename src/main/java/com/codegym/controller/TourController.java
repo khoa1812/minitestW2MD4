@@ -48,10 +48,13 @@ public class TourController {
     }
 
     @GetMapping("/search")
-    public ModelAndView listCarsSearch(@RequestParam("search") Optional<String> search, Pageable pageable){
+    public ModelAndView listTourSearch(@RequestParam("search") Optional<String> search, Pageable pageable) throws DuplicateCodeException {
         Page<Tour> tours;
-        if(search.isPresent()){
+        if (search.isPresent()) {
             tours = tourService.findAllByCodeContaining(pageable, search.get());
+            if (!tours.hasContent()) {
+                throw new DuplicateCodeException();
+            }
         } else {
             tours = tourService.findAll(pageable);
         }
@@ -59,6 +62,7 @@ public class TourController {
         modelAndView.addObject("tours", tours);
         return modelAndView;
     }
+
 
     @GetMapping("/create")
     public String createForm(Model model){
