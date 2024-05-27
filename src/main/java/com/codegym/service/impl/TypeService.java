@@ -1,9 +1,11 @@
 package com.codegym.service.impl;
 
+import com.codegym.exception.DuplicateCodeException;
 import com.codegym.model.Type;
 import com.codegym.repository.ITypeRepository;
 import com.codegym.service.ITypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,8 +20,12 @@ public class TypeService implements ITypeService {
     }
 
     @Override
-    public void save(Type type) {
-        iTypeRepository.save(type);
+    public void save(Type type) throws DuplicateCodeException {
+        try {
+            iTypeRepository.save(type);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateCodeException();
+        }
     }
 
     @Override

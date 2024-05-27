@@ -2,23 +2,47 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="/layout :: head">
     <title>List Tours</title>
+    <style>
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
 <h3>Tours</h3>
-<p>
-    <a th:href="@{create}">
-        Add new Tour
-    </a>
-</p>
-<p>
-    <a th:href="@{/type}">
-        Type Management
-    </a>
-</p>
+<a th:href="@{/create}" style="background-color: #ff1493; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 5px;">
+    Add new Tour
+</a>
+
+<a th:href="@{/type}" style="background-color: #800080; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 5px;">
+    Type Management
+</a>
+
+
 <div class="notify">
     <div th:if="${message}">
         <span th:text="${message}"></span>
     </div>
+</div>
+<div style="margin-bottom: 10px">
+    <form action="/search" method="get">
+        <input type="text" name="search" placeholder="Search by code">
+        <button type="submit">Search</button>
+    </form>
 </div>
 
 <table id="customers">
@@ -42,11 +66,30 @@
         <td th:text="${tour.price}"></td>
         <td th:text="${tour.type.name}"></td>
         <td th:text="${tour.idUser}"></td>
-        <td><a th:href="@{/update/{id}(id=${tour.id})}">update</a></td>
-        <td><a th:href="@{/delete/{id}(id=${tour.id})}">delete</a></td>
+        <td><a th:href="@{/update/{id}(id=${tour.id})}" style="background-color: #007bff; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 5px;">
+            Update
+        </a></td>
+        <td><a th:href="@{/delete/{id}(id=${tour.id})}" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 5px;">
+            Delete
+        </a></td>
+
+
     </tr>
     </tbody>
 </table>
+<!--<a th:href="@{/tour}" style="background-color: #ff1493; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 5px;">-->
+<!--    Back to tour list-->
+<!--</a>-->
+<a th:href="@{/tour}" style="background-color: #808080; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 5px;">
+    &#8592;
+</a>
+
+<a class="btn btn-primary" th:if="${tours.hasPrevious()}"
+   th:href="@{/tours/page(page=${tours.number - 1})}">Previous</a>
+<span th:text="${cars.number + 1}"></span> | <span th:text="${tours.totalPages}"></span>
+<a class="btn btn-primary" th:if="${tours.hasNext()}"
+   th:href="@{/tours/page(page=${tours.number + 1})}">Next</a>
 <footer th:replace="/layout :: footer"></footer>
 </body>
 </html>
+

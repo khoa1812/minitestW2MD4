@@ -1,5 +1,6 @@
 package com.codegym.controller;
 
+import com.codegym.exception.DuplicateCodeException;
 import com.codegym.model.Type;
 import com.codegym.service.ITypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Controller
 public class TypeController {
@@ -32,7 +33,7 @@ public class TypeController {
     }
 
     @PostMapping("/type/create")
-    public String createType(@Valid @ModelAttribute("type") Type type, BindingResult bindingResult, RedirectAttributes redirect) {
+    public String createType(@Valid @ModelAttribute("type") Type type, BindingResult bindingResult, RedirectAttributes redirect) throws DuplicateCodeException {
         if (bindingResult.hasErrors()) {
             return "type/createtype";
         }
@@ -51,7 +52,7 @@ public class TypeController {
     }
 
     @PostMapping("/type/update/{id}")
-    public String updateType(@PathVariable Long id, @Valid @ModelAttribute("type") Type type, BindingResult bindingResult, RedirectAttributes redirect) {
+    public String updateType(@PathVariable Long id, @Valid @ModelAttribute("type") Type type, BindingResult bindingResult, RedirectAttributes redirect) throws DuplicateCodeException {
         if (bindingResult.hasErrors()) {
             return "type/updatetype";
         }
@@ -64,7 +65,12 @@ public class TypeController {
     @GetMapping("/type/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes redirect) {
         typeService.remove(id);
-        redirect.addFlashAttribute("message", "Tour deleted successfully");
+        redirect.addFlashAttribute("message", "Type deleted successfully");
         return "redirect:/type";
+    }
+
+    @ExceptionHandler(DuplicateCodeException.class)
+    public ModelAndView showInputNotAcceptable() {
+        return new ModelAndView("/inputs-not-acceptable");
     }
 }

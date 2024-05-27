@@ -5,11 +5,6 @@
 </head>
 <body>
 <h3>Update Tour</h3>
-<p>
-    <a th:href="@{/tour}">
-        Back to tour list
-    </a>
-</p>
 <div id="form">
     <form th:action="@{/update/{id}(id=${tour.id})}" th:object="${tour}"
           method="POST" novalidate="novalidate">
@@ -43,6 +38,9 @@
         <input type="submit" value="Save Changes"/>
     </form>
 </div>
+<a th:href="@{/tour}" style="background-color: #808080; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 5px;">
+    &#8592;
+</a>
 <footer th:replace="/layout :: footer"></footer>
 </body>
 </html>

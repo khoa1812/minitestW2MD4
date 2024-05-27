@@ -1,10 +1,14 @@
 package com.codegym.service.impl;
 
+import com.codegym.exception.DuplicateCodeException;
 import com.codegym.model.Tour;
 import com.codegym.model.Type;
 import com.codegym.repository.ITourRepository;
 import com.codegym.service.ITourService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,9 +24,14 @@ public class TourService implements ITourService {
     }
 
     @Override
-    public void save(Tour tour) {
-        iTourRepository.save(tour);
+    public void save(Tour tour) throws DuplicateCodeException {
+        try {
+            iTourRepository.save(tour);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateCodeException();
+        }
     }
+
 
     @Override
     public Optional<Tour> findById(Long id) {
@@ -37,6 +46,20 @@ public class TourService implements ITourService {
     @Override
     public Iterable<Tour> findAllByType(Type type) {
         return iTourRepository.findAllByType(type);
+    }
+
+    @Override
+    public Page<Tour> findAll(Pageable pageable) {
+        return iTourRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Tour> findAllByCodeContaining(Pageable pageable, String code) {
+        try {
+            return iTourRepository.findAllByCodeContaining(pageable, code);
+        } catch (Exception e) {
+            throw new RuntimeException("Error while fetching tours by code containing: " + e.getMessage());
+        }
     }
 }
 

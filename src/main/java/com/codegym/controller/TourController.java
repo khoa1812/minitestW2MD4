@@ -1,10 +1,13 @@
 package com.codegym.controller;
 
+import com.codegym.exception.DuplicateCodeException;
 import com.codegym.model.Tour;
 import com.codegym.model.Type;
 import com.codegym.service.ITourService;
 import com.codegym.service.ITypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,14 +39,35 @@ public class TourController {
         return modelAndView;
     }
 
+    @GetMapping
+    public ModelAndView listTour(Pageable pageable) {
+        Page<Tour> tours = tourService.findAll(pageable);
+        ModelAndView modelAndView = new ModelAndView("/list");
+        modelAndView.addObject("tours", tours);
+        return modelAndView;
+    }
+
+    @GetMapping("/search")
+    public ModelAndView listCarsSearch(@RequestParam("search") Optional<String> search, Pageable pageable){
+        Page<Tour> tours;
+        if(search.isPresent()){
+            tours = tourService.findAllByCodeContaining(pageable, search.get());
+        } else {
+            tours = tourService.findAll(pageable);
+        }
+        ModelAndView modelAndView = new ModelAndView("/list");
+        modelAndView.addObject("tours", tours);
+        return modelAndView;
+    }
+
     @GetMapping("/create")
-    public String createForm(Model model) {
+    public String createForm(Model model){
         model.addAttribute("tour", new Tour());
         return "create";
     }
 
     @PostMapping("/create")
-    public String checkValidation(@Valid Tour tour, Model model, BindingResult bindingResult) {
+    public String checkValidation(@Valid Tour tour, Model model, BindingResult bindingResult) throws DuplicateCodeException {
         new Tour().validate(tour, bindingResult);
         if (bindingResult.hasErrors()) {
             return "create";
@@ -54,7 +78,7 @@ public class TourController {
     }
 
     @GetMapping("/update/{id}")
-    public ModelAndView updateForm(@PathVariable Long id) {
+    public ModelAndView updateForm(@PathVariable Long id){
         Optional<Tour> tour = tourService.findById(id);
         if (tour.isPresent()) {
             ModelAndView modelAndView = new ModelAndView("/update");
@@ -66,7 +90,7 @@ public class TourController {
     }
 
     @PostMapping("/update/{id}")
-    public String checkValidationUpdate(@Valid Tour tour, Model model, BindingResult bindingResult) {
+    public String checkValidationUpdate(@Valid Tour tour, Model model, BindingResult bindingResult) throws DuplicateCodeException {
         new Tour().validate(tour, bindingResult);
         if (bindingResult.hasErrors()) {
             return "update";
@@ -81,5 +105,10 @@ public class TourController {
         tourService.remove(id);
         redirect.addFlashAttribute("message", "Tour deleted successfully");
         return "redirect:/tour";
+    }
+
+    @ExceptionHandler(DuplicateCodeException.class)
+    public ModelAndView showInputNotAcceptable() {
+        return new ModelAndView("/inputs-not-acceptable");
     }
 }

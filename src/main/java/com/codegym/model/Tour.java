@@ -7,6 +7,7 @@ import org.springframework.validation.Validator;
 
 import javax.persistence.*;
 
+import java.util.UUID;
 @Component
 @Entity
 @Table(name = "tour")
@@ -15,6 +16,7 @@ public class Tour implements Validator {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String code;
     private String destination;
     private Double price;
@@ -28,6 +30,10 @@ public class Tour implements Validator {
     public Tour() {
     }
 
+    //    public Tour() {
+//        this.code = generateUniqueCode();
+//    }
+
     public Tour(Long id, String code, String destination, Double price, Type type, Long idUser) {
         this.id = id;
         this.code = code;
@@ -36,6 +42,10 @@ public class Tour implements Validator {
         this.type = type;
         this.idUser = idUser;
     }
+
+//    private String generateUniqueCode() {
+//        return "CG" + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+//    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

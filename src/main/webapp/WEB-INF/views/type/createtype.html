@@ -6,9 +6,7 @@
 </head>
 <body>
 <h3>Create New Type</h3>
-<div>
-    <a th:href="@{/type}">Back to list of Type</a>
-</div>
+
 <div th:replace="/layout :: head"></div>
 <div id="form">
     <form th:action="@{/type/create}" th:object="${type}" method="post">
@@ -22,6 +20,9 @@
         </div>
     </form>
 </div>
+<a th:href="@{/type}" style="background-color: #808080; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 5px;">
+    &#8592;
+</a>
 <footer th:replace="/layout :: footer"></footer>
 </body>
 </html>

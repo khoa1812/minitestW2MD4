@@ -1,17 +1,65 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="UTF-8">
+<head th:fragment="head">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>List Types</title>
+    <style>
+        body {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        h3 {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            margin: 0;
+            text-align: left;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td, th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            margin: 10px 0;
+            text-align: center;
+            width: 100%;
+            padding: 10px 0;
+            background-color: #f8f9fa;
+        }
+    </style>
 </head>
 <body>
 <h3>List of Types</h3>
-<div>
-    <a th:href="@{/type/create}">Create New Type</a>
-</div>
-<div>
-    <a th:href="@{/tour}">Back to tour list Tour</a>
-</div>
+<a th:href="@{/type/create}" style="background-color: #ff1493; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 5px;">
+    Create New Type
+</a>
+
 <table>
     <thead>
     <tr>
@@ -25,11 +73,19 @@
         <td th:text="${type.id}"></td>
         <td th:text="${type.name}"></td>
         <td>
-            <a th:href="@{/type/update/{id}(id=${type.id})}">Update</a> |
-            <a th:href="@{/type/delete/{id}(id=${type.id})}">Delete</a>
+            <a th:href="@{/type/update/{id}(id=${type.id})}" style="background-color: #007bff; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 5px;">
+            Update
+            </a>
+            <a th:href="@{/type/delete/{id}(id=${type.id})}" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 5px;">
+            Delete
+            </a>
         </td>
     </tr>
     </tbody>
 </table>
+<a th:href="@{/tour}" style="background-color: #808080; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 5px;">
+    &#8592;
+</a>
+<footer th:replace="/layout :: footer"></footer>
 </body>
 </html>
