@@ -54,12 +54,14 @@ public class TourService implements ITourService {
     }
 
     @Override
-    public Page<Tour> findAllByCodeContaining(Pageable pageable, String code) {
-        try {
-            return iTourRepository.findAllByCodeContaining(pageable, code);
-        } catch (Exception e) {
-            throw new RuntimeException("Error while fetching tours by code containing: " + e.getMessage());
+    public Page<Tour> findAllByCodeContaining(Pageable pageable, String code) throws DuplicateCodeException {
+        Page<Tour> tours = iTourRepository.findAllByCodeContaining(pageable, code);
+        if (tours.isEmpty()) {
+            throw new DuplicateCodeException();
         }
+        return tours;
     }
+
+
 }
 

@@ -1,5 +1,6 @@
 package com.codegym.logger;
 
+import com.codegym.exception.DuplicateCodeException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 public class Logger {
 
     @AfterThrowing(pointcut = "execution(public * com.codegym.service.ITourService.findAllByCodeContaining(..))", throwing = "e")
-    public void logMethod(Exception e) {
+    public void logMethod(DuplicateCodeException e) {
         System.out.println("[CMS] co loi xay ra: " + e.getMessage());
     }
 
